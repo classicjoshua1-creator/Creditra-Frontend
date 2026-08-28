@@ -36,6 +36,25 @@ function generateAprHistory(
   return entries;
 }
 
+/**
+ * Canonical deterministic ordering for credit lines.
+ *
+ * The unique id is the primary sort key; openedAt and name are tie-breakers
+ * for duplicate or malformed ids so the sort never depends on array position.
+ */
+export function compareCreditLines(a: CreditLine, b: CreditLine): number {
+  const aId = String(a.id);
+  const bId = String(b.id);
+  if (aId !== bId) return aId < bId ? -1 : 1;
+  const aOpenedAt = String(a.openedAt);
+  const bOpenedAt = String(b.openedAt);
+  if (aOpenedAt !== bOpenedAt) return aOpenedAt < bOpenedAt ? -1 : 1;
+  const aName = String(a.name);
+  const bName = String(b.name);
+  if (aName !== bName) return aName < bName ? -1 : 1;
+  return 0;
+}
+
 export const MOCK_CREDIT_LINES: CreditLine[] = [
   {
     id: 'CL-2024-001',
@@ -182,7 +201,7 @@ export const MOCK_CREDIT_LINES: CreditLine[] = [
     ],
     aprHistory: generateAprHistory(7.5, 365, 606),
   },
-];
+].sort(compareCreditLines);
 
 // ─── Attestations mock data ───────────────────────────────────────────────────
 
