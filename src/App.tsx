@@ -237,6 +237,7 @@ function App() {
                         <Route path="/" element={<Dashboard />} />
                         <Route path="/transactions" element={<TransactionHistory />} />
                         <Route path="/credit-lines" element={<CreditLines />} />
+                        <Route path="/credit-lines/compare" element={<CreditLineCompare />} />
                         <Route path="/help" element={<HelpCenter />} />
                         <Route path="/draw-credit" element={<DrawCreditPage />} />
                         <Route
