@@ -72,7 +72,14 @@ export function CreditLineSelector({
 
       {/* Credit-line list */}
       <ul className="dc-credit-line-list" role="list">
-        {creditLines.map((line) => {
+        {[...creditLines]
+          .sort((a, b) => {
+            // Deterministic ordering: highest available balance first,
+            // then by name, and finally by id as a stable tie-breaker.
+            if (a.available !== b.available) return b.available - a.available;
+            return a.name.localeCompare(b.name) || String(a.id).localeCompare(String(b.id));
+          })
+          .map((line) => {
           const isHighUtilization = line.utilization > 80;
 
           return (
